@@ -2,15 +2,17 @@
 
 echo "WORKER NODE CONFIGURATION"
 
-# Update and upgrade the system
+# Install curl in the worker node
 sudo apt-get update
 sudo apt-get install curl -y
 
-# Get the K3s server token
-TOKEN=$(cat /vagrant/server_token.txt)
+# Modify the K3s environment variables
+export INSTALL_K3S_EXEC="agent --server https://192.168.56.110:6443 -t $(cat /vagrant/server_token.env) --node-ip=192.168.56.111"
 
 # Install K3s Worker Node
-curl -sfL https://get.k3s.io | K3S_URL=https://192.168.56.110:6443 K3S_TOKEN=$TOKEN sh -s - agent
+curl -sfL https://get.k3s.io | sh -
 
-# Verify the K3s server is running
-sudo kubectl get nodes
+# Remove the token file
+sudo rm /vagrant/server_token.env
+
+echo "K3s Worker Node is Ready!"
