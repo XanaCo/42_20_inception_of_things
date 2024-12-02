@@ -9,9 +9,10 @@ RESET="\033[0m"
 echo "${B_GREEN}. . . WORKER CONFIGURATION SCRIPT . . .${RESET}"
 
 # Preinstall Config in the worker node
-if sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+if sudo apt-get update -y && \
 sudo apt-get upgrade -y && \
-sudo apt-get install curl -y;
+sudo apt-get install curl -y && \
+echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh;
 then
     echo "${GREEN}Preinstallation Succeded!${RESET}"
 else
@@ -45,3 +46,5 @@ else
     echo "${B_RED}Error: K3s Server Token Not Removed!${RESET}"
     exit 1
 fi
+
+echo "${B_GREEN}. . . WORKER IS READY . . .${RESET}"

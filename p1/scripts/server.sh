@@ -8,9 +8,10 @@ RESET="\033[0m"
 echo "${B_GREEN}. . . SERVER CONFIGURATION SCRIPT . . .${RESET}"
 
 # Preinstall Config in the server node
-if sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+if sudo apt-get update -y && \
 sudo apt-get upgrade -y && \
-sudo apt-get install curl -y;
+sudo apt-get install curl -y && \
+echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh;
 then
     echo "${B_GREEN}Preinstallation Succeded!${RESET}"
 else
