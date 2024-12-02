@@ -14,17 +14,4 @@ Vagrant.configure("2") do |config|
 		server.vm.provision "file", source: "scripts/server.sh", destination: "/home/vagrant/server.sh"
 		server.vm.provision "shell", privileged: true, inline: "sh /home/vagrant/server.sh"
 	end
-
-	# Define 2nd VM
-	config.vm.define "ancolmenSW" do |worker|
-		worker.vm.hostname = "ancolmenSW"
-		worker.vm.network "private_network", ip: "192.168.56.111"
-		worker.vm.provider "virtualbox" do |vb|
-			vb.customize ["modifyvm", :id, "--name", "ancolmenSW"]
-			vb.memory = "1024"
-			vb.cpus = 1
-		end
-		worker.vm.provision "file", source: "scripts/worker.sh", destination: "/home/vagrant/worker.sh"
-		worker.vm.provision "shell", privileged: true, inline: "sh /home/vagrant/worker.sh"
-	end
 end

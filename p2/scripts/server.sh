@@ -39,12 +39,6 @@ else
     exit 1
 fi
 
-# Get the K3s server token
-if sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/scripts/; then
-    echo "${B_GREEN}K3s Server Token Copied!${RESET}"
-else
-    echo "${B_RED}Error: K3s Server Token Not Copied!${RESET}"
-    exit 1
-fi
+# Install extras
 
 echo "${B_GREEN}. . . SERVER IS READY . . .${RESET}"
