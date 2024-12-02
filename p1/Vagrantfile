@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
+  
+  user = ENV['USER']
+  machine_1 = "#{user}S"
+  machine_2 = "#{user}SW"
+  
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 1 
+    vb.memory = "1024"
+  end
+  
+  config.vm.define machine_1 do |machine|
+    machine.vm.hostname = machine_1
+    machine.vm.network "private_network", ip: "192.168.56.110", hostname: true
+    machine.vm.provision "shell", path: "scripts/server.sh", :args => "192.168.56.110", privileged: true
+  end
+
+  config.vm.define machine_2 do |machine|
+    machine.vm.hostname = machine_2
+    machine.vm.network "private_network", ip: "192.168.56.111", hostname: true
+    machine.vm.provision "shell", path: "scripts/serverWorker.sh", :args => ["192.168.56.110", "192.168.56.111"], privileged: true
+  end
+
+end
