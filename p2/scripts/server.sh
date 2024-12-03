@@ -39,9 +39,9 @@ else
 fi
 
 # Create ConfigMaps
-if sudo kubectl create configmap app1 --from-file /vagrant/apps/app1.html && \
-sudo kubectl create configmap app2 --from-file /vagrant/apps/app2.html && \
-sudo kubectl create configmap app3 --from-file /vagrant/apps/app3.html; then
+if sudo kubectl create configmap app1 --from-file /vagrant/confs/app1/index.html && \
+sudo kubectl create configmap app2 --from-file /vagrant/confs/app2/index.html && \
+sudo kubectl create configmap app3 --from-file /vagrant/confs/app3/index.html; then
 	echo "${B_GREEN}ConfigMaps Created!${RESET}"
 else
 	echo "${B_RED}Error: ConfigMaps Not Created!${RESET}"
@@ -49,9 +49,9 @@ else
 fi
 
 # Create Deployments
-if sudo kubectl apply -f /vagrant/confs/app1.yml && \
-sudo kubectl apply -f /vagrant/confs/app2.yml && \
-sudo kubectl apply -f /vagrant/confs/app3.yml; then
+if sudo kubectl apply -f /vagrant/confs/app1/app1.yml && \
+sudo kubectl apply -f /vagrant/confs/app2/app2.yml && \
+sudo kubectl apply -f /vagrant/confs/app3/app3.yml; then
 	echo "${B_GREEN}Deployments Created!${RESET}"
 else
 	echo "${B_RED}Error: Deployments Not Created!${RESET}"

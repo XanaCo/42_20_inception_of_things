@@ -1,11 +1,11 @@
 
-# Ingress
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app1
+  name: app3
   annotations:
-    kubernetes.io/ingress.class: "traefik"
+    spec.ingressClassName: "traefik"
 spec:
   rules:
   - http:
@@ -14,38 +14,35 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: app1
+            name: app3
             port:
               number: 80
 
-# Service
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: app1
+  name: app3
 spec:
-  selector:
-    app.kubernetes.io/name: app1
   ports:
     - port: 80
       protocol: TCP
   selector:
-    app:  app1
+    app:  app3
 
-# Deployment
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1-nginx
+  name: app3-nginx
 spec:
   selector:
     matchLabels:
-      app: app1
-  # replicas: 3
+      app: app3
   template:
     metadata:
       labels:
-        app: app1
+        app: app3
     spec:
       containers:
       - name: nginx
@@ -53,9 +50,9 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: app1-volume
+        - name: app3-volume
           mountPath: /usr/share/nginx/html
       volumes:
-      - name: app1-volume
+      - name: app3-volume
         configMap:
-          name: app1
+          name: app3
