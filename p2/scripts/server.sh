@@ -23,7 +23,6 @@ if export INSTALL_K3S_EXEC="
 --write-kubeconfig-mode=644 \
 --bind-address=192.168.56.110 \
 --node-ip 192.168.56.110 \
---tls-san $(hostname) \
 --advertise-address=192.168.56.110"; then
     echo "${B_GREEN}K3s Environment Variables Set!${RESET}"
 else
@@ -39,6 +38,24 @@ else
     exit 1
 fi
 
-# Install extras
+# Create ConfigMaps
+if sudo kubectl create configmap app1 --from-file /vagrant/apps/app1.html && \
+sudo kubectl create configmap app2 --from-file /vagrant/apps/app2.html && \
+sudo kubectl create configmap app3 --from-file /vagrant/apps/app3.html; then
+	echo "${B_GREEN}ConfigMaps Created!${RESET}"
+else
+	echo "${B_RED}Error: ConfigMaps Not Created!${RESET}"
+	exit 1
+fi
+
+# Create Deployments
+if sudo kubectl apply -f /vagrant/confs/app1.yml && \
+sudo kubectl apply -f /vagrant/confs/app2.yml && \
+sudo kubectl apply -f /vagrant/confs/app3.yml; then
+	echo "${B_GREEN}Deployments Created!${RESET}"
+else
+	echo "${B_RED}Error: Deployments Not Created!${RESET}"
+	exit 1
+fi
 
 echo "${B_GREEN}. . . SERVER IS READY . . .${RESET}"

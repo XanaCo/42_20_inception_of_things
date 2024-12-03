@@ -17,3 +17,7 @@
 - [Argo CD - Blog](https://une-tasse-de.cafe/blog/argocd/)
 - [Argo CD - Sokube](https://www.sokube.io/en/blog/gitops-on-a-laptop-with-k3d-and-argocd-en)
 
+#### BONUS 
+- [Gitlab](https://medium.com/@edgars.rungis/how-to-develop-simple-ci-cd-pipeline-by-using-gitlab-and-argocd-to-deploy-application-on-oci-716432724297)
+
+

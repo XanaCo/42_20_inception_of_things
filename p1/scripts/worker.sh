@@ -8,7 +8,6 @@ echo "${B_GREEN}. . . WORKER CONFIGURATION SCRIPT . . .${RESET}"
 
 # Preinstall Config in the worker node
 if sudo apt-get update -y && \
-sudo apt-get upgrade -y && \
 sudo apt-get install curl -y && \
 echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh;
 then
