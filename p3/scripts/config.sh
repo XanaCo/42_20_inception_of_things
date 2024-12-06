@@ -13,7 +13,7 @@ echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh;
 then
     echo "${B_GREEN}Preinstallation Succeded!${RESET}"
 else
-    echo "${B_RED}Error: Preinstallation Already Done${RESET}"
+    echo "${B_RED}Preinstallation Already Done${RESET}"
 fi
 
 # 00.Install K3d Requisites: 
