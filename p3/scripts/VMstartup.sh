@@ -1,7 +1,7 @@
 #!bin/bash
 
-sudo usermod -aG sudo vboxuser
-su vboxuser
+# sudo usermod -aG sudo vboxuser
+# su vboxuser
 sudo apt-get update -y 
 sudo apt-get upgrade 
 sudo apt-get install curl -y 
