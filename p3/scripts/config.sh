@@ -6,15 +6,9 @@ RESET="\033[0m"
 
 echo "${B_GREEN}. . . CONFIGURATION SCRIPT . . .${RESET}"
 
-# Preinstall Config
-if sudo apt-get update -y && \
-sudo apt-get install curl -y && \
-echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh;
-then
-    echo "${B_GREEN}Preinstallation Succeded!${RESET}"
-else
-    echo "${B_RED}Preinstallation Already Done${RESET}"
-fi
+# Cleanslate Preinstall Config
+sudo sh ./VMcleanup.sh
+sudo sh ./VMstartup.sh
 
 # 00.Install K3d Requisites: 
 # A. kubeclt:
