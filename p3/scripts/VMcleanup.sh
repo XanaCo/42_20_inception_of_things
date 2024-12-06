@@ -1,7 +1,7 @@
 #!bin/bash
 
 sudo rm /usr/local/bin/kubectl &&
-rm ~/.local/bin/kubectl &&
+rm kubectl &&
 sudo apt-get purge -y docker docker-engine docker.io containerd runc &&
 sudo apt-get autoremove -y &&
 sudo rm -rf /var/lib/docker &&
