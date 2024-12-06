@@ -7,8 +7,7 @@ RESET="\033[0m"
 echo "${B_GREEN}. . . CONFIGURATION SCRIPT . . .${RESET}"
 
 # Cleanslate Preinstall Config
-sudo sh ./VMcleanup.sh
-sudo sh ./VMstartup.sh
+sudo sh ./configCleanup.sh
 
 # 00.Install K3d Requisites: 
 # A. kubeclt:
