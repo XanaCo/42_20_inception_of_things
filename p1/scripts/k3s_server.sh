@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Executing k3s_server.sh on $(hostname)"
 
 result=$(command -v curl)
 
@@ -16,3 +17,5 @@ export INSTALL_K3S_EXEC="--node-ip=192.168.56.110"
 curl -sfL https://get.k3s.io | sh -
 
 sudo cat /var/lib/rancher/k3s/server/token > /vagrant/server-token
+
+echo "Finished executing k3s_server.sh on $(hostname)"

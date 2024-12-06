@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Executing k3s_agent.sh on $(hostname)"
 
 result=$(command -v curl)
 
@@ -12,8 +13,9 @@ else
     echo "curl is now installed"
 fi
 
-# curl -sfL https://get.k3s.io | sh -
-token=$(cat /vagrant/server-token)
-curl -sfL https://get.k3s.io | K3S_URL=https://192.168.56.110:6443 K3S_TOKEN=$token sh -
+export INSTALL_K3S_EXEC="agent --server=https://192.168.56.110:6443 --node-ip=192.168.56.111 --token-file=/vagrant/server-token"
+curl -sfL https://get.k3s.io | sh -
 
 sudo rm /vagrant/server-token
+
+echo "Finished executing k3s_agent.sh on $(hostname)"
