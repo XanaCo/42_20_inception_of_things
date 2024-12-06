@@ -39,8 +39,12 @@ kubectl version --client
 
 # B. Docker
 # https://get.docker.com/
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+if [ -x "$(command -v docker)" ]; then
+	echo "${B_GREEN}Docker Already Installed!${RESET}"
+else
+	curl -fsSL https://get.docker.com -o get-docker.sh
+	sudo sh get-docker.sh
+fi
 
 # 01.Install K3d
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
