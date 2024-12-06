@@ -22,8 +22,8 @@ fi
 if [ -x "$(command -v docker)" ]; then
 	sudo docker rm -f $(docker ps -a -q)
 	sudo docker rmi $(docker images -q)
-	sudo docker system prune
-	sudo docker volume prune
+	sudo docker system prune -af
+	sudo docker volume prune -f
 	sudo apt-get purge -y docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin
 	sudo apt-get autoremove -y --purge
 	sudo rm -rf /var/lib/docker
