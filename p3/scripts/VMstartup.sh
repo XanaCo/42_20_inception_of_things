@@ -5,22 +5,41 @@
 # su vboxuser
 
 # Install VSCode
-sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-sudo apt-get update -y
-sudo apt-get install code -y
+if ! command -v code &> /dev/null
+then
+	sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+	sudo apt-get update -y
+	sudo apt-get install code -y
+else
+	echo "VSCode is already installed"
+fi
 
 #Install curl
-sudo apt-get install curl -y
+if ! command -v curl &> /dev/null
+then
+	sudo apt-get install curl -y
+else
+	echo "Curl is already installed"
+fi
 
 # Install git
-sudo apt-get install git
+if ! command -v git &> /dev/null
+then
+	sudo apt-get install git -y
+else
+	echo "Git is already installed"
+fi
 
 # Make aliases
 echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh
 
 # Create ssh public key
-ssh-keygen -t ed25519 -C "ancolmen@student.42.fr"
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-cat ~/.ssh/id_ed25519.pub
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+	ssh-keygen -t ed25519 -C "ancolmen@student.42.fr"
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_ed25519
+	cat ~/.ssh/id_ed25519.pub
+else
+	echo "SSH key already exists"
+fi
