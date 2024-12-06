@@ -1,5 +1,10 @@
 #!bin/bash
 
+B_GREEN="\033[1;32m"
+RESET="\033[0m"
+
+echo "${B_GREEN}. . . CLEANUP SCRIPT . . .${RESET}"
+
 # Clean up K3d
 if [ -x "$(command -v k3d)" ]; then
 	k3d cluster delete dev-app
@@ -10,7 +15,7 @@ if [ -x "$(command -v k3d)" ]; then
 	rm kubectl
 	rm kubectl.sha256
 	else
-	echo "K3d is not installed"
+	echo "${B_GREEN}K3d is not installed${RESET}"
 fi
 
 # Clean up Docker
@@ -24,9 +29,11 @@ if [ -x "$(command -v docker)" ]; then
 	sudo rm -rf /var/lib/docker
 	sudo rm get-docker.sh
 	else
-	echo "Docker is not installed"
+	echo "${B_GREEN}Docker is not installed${RESET}"
 fi
 
 # Finish cleaning up
 sudo apt-get clean 
 sudo apt-get autoremove -y
+
+echo "${B_GREEN}. . . CLEANUP COMPLETE . . .${RESET}"

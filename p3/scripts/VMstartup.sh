@@ -1,8 +1,12 @@
 #!bin/bash
-
 # RUN on root or do this before!
 # sudo usermod -aG sudo vboxuser
 # su vboxuser
+
+B_GREEN="\033[1;32m"
+RESET="\033[0m"
+
+echo "${B_GREEN}. . . STARTUP SCRIPT . . .${RESET}"
 
 # Install VSCode
 if ! command -v code &> /dev/null
@@ -12,7 +16,7 @@ then
 	sudo apt-get update -y
 	sudo apt-get install code -y
 else
-	echo "VSCode is already installed"
+	echo "${B_GREEN}VSCode is already installed${RESET}"
 fi
 
 #Install curl
@@ -20,7 +24,7 @@ if ! command -v curl &> /dev/null
 then
 	sudo apt-get install curl -y
 else
-	echo "Curl is already installed"
+	echo "${B_GREEN}Curl is already installed${RESET}"
 fi
 
 # Install git
@@ -28,7 +32,7 @@ if ! command -v git &> /dev/null
 then
 	sudo apt-get install git -y
 else
-	echo "Git is already installed"
+	echo "${B_GREEN}Git is already installed${RESET}"
 fi
 
 # Make aliases
@@ -41,5 +45,7 @@ if [ ! -f ~/.ssh/id_ed25519 ]; then
 	ssh-add ~/.ssh/id_ed25519
 	cat ~/.ssh/id_ed25519.pub
 else
-	echo "SSH key already exists"
+	echo "${B_GREEN}SSH key already exists${RESET}"
 fi
+
+echo "${B_GREEN}. . . STARTUP COMPLETE . . .${RESET}"
