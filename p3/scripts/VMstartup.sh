@@ -1,7 +1,9 @@
 #!bin/bash
-# RUN on root or do this before!
+#
+# MAKE VBOXUSER A SUDOER BEFORE RUNNING THIS SCRIPT:
 # sudo usermod -aG sudo vboxuser
 # su vboxuser
+#
 
 B_GREEN="\033[1;32m"
 RESET="\033[0m"
