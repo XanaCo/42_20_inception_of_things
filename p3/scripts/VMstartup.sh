@@ -21,24 +21,21 @@ else
 fi
 
 #Install curl
-if ! command -v curl &> /dev/null
-then
+if ! [ -x "$(command -v curl)" ]; then
 	sudo apt-get install curl -y
 else
 	echo "${B_GREEN}Curl is already installed${RESET}"
 fi
 
 # Install git
-if ! command -v git &> /dev/null
-then
+if ! [ -x "$(command -v git)" ]; then
 	sudo apt-get install git -y
 else
 	echo "${B_GREEN}Git is already installed${RESET}"
 fi
 
 # Install VSCode
-if ! command -v code &> /dev/null
-then
+if ! [ -x "$(command -v code)" ]; then
 	sudo curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 	sudo apt-get update -y

@@ -1,59 +1,18 @@
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: app1
-  annotations:
-    spec.ingressClassName: "traefik"
+  name: wil-app
+  namespace: argocd
 spec:
-  rules:
-  - host: app1.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: app1
-            port:
-              number: 80
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: app1
-spec:
-  ports:
-    - port: 80
-      protocol: TCP
-  selector:
-    app:  app1
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: app1-nginx
-spec:
-  selector:
-    matchLabels:
-      app: app1
-  template:
-    metadata:
-      labels:
-        app: app1
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: app1-volume
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: app1-volume
-        configMap:
-          name: app1
+  project: default
+  source:
+    repoURL: https://github.com/XanaCo/ancolmen-IoT
+    targetRevision: IoT_an
+    path: p3/dev/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

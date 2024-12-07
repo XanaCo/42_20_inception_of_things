@@ -5,15 +5,17 @@ RESET="\033[0m"
 
 echo "${B_GREEN}. . . CLEANUP SCRIPT . . .${RESET}"
 
+cd "$(dirname "$0")"
+
 # Clean up K3d
 if [ -x "$(command -v k3d)" ]; then
-	k3d cluster delete -a
-	kubectl delete namespace --all --cascade=true
-	rm -f /usr/local/bin/k3d
-	rm /usr/local/bin/kubectl
-	rm kubectl
-	rm kubectl.sha256
-	else
+	sudo k3d cluster delete -a
+	sudo kubectl delete namespace --all
+	sudo rm -f /usr/local/bin/k3d
+	sudo rm /usr/local/bin/kubectl
+	sudo rm kubectl
+	sudo rm kubectl.sha256
+else
 	echo "${B_GREEN}K3d is not installed${RESET}"
 fi
 
@@ -27,7 +29,7 @@ if [ -x "$(command -v docker)" ]; then
 	sudo apt-get autoremove -y --purge
 	sudo rm -rf /var/lib/docker
 	sudo rm get-docker.sh
-	else
+else
 	echo "${B_GREEN}Docker is not installed${RESET}"
 fi
 
