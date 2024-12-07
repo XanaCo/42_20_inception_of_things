@@ -39,16 +39,5 @@ if k3s pas encore installe
 else
     echo "${B_ORANGE}k3s already installed${RESET}"
 fi
-# export INSTALL_K3S_EXEC="--node-ip=192.168.56.110"
-# curl -sfL https://get.k3s.io | sh -
 
-# Writing the server's token in a file in the shared folder /vagrant
-# in order for the agent to be able to access it in the Worker VM
-if sudo cat /var/lib/rancher/k3s/server/token > /vagrant/server-token; then
-    echo ""
-else
-    echo ""
-    exit 1
-fi
-
-echo "Finished executing k3s_server.sh on $(hostname)"
+echo "${B_YELLOW}Finished executing k3s_server.sh on $(hostname)${RESET}"

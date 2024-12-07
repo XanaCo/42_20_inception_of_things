@@ -17,3 +17,9 @@
 - [Argo CD - Blog](https://une-tasse-de.cafe/blog/argocd/)
 - [Argo CD - Sokube](https://www.sokube.io/en/blog/gitops-on-a-laptop-with-k3d-and-argocd-en)
 
+
+sudo kubectl get nodes -o wide
+sudo cat /var/lib/rancher/k3s/server/token
+sudo journalctl -u k3s
+sudo journalctl -u k3s-agent
+ip a show eth1
