@@ -9,7 +9,6 @@ echo "${B_GREEN}. . . CONFIGURATION SCRIPT . . .${RESET}"
 # Cleanslate Preinstall Config
 cd "$(dirname "$0")"
 sudo sh ./configCleanup.sh
-sleep 2
 
 # 00.Install K3d Requisites: 
 # A. kubeclt: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux
@@ -30,7 +29,6 @@ else
     echo "${B_GREEN}Kubectl is already installed${RESET}"
 fi
 
-sleep 2
 # B. Docker : https://get.docker.com/
 if ! [ -x "$(command -v docker)" ]; then
 	sudo curl -fsSL https://get.docker.com -o get-docker.sh
@@ -39,14 +37,12 @@ else
 	echo "${B_GREEN}Docker is already installed!${RESET}"
 fi
 
-sleep 2
 # 01.Install K3d
 sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 sudo k3d --version
 # Create a cluster
 sudo k3d cluster create dev-app --wait
 
-sleep 2
 # 02.Install ArgoCD
 sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
@@ -55,10 +51,11 @@ sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-
 # wait for pods
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sudo kubectl -n argocd get pods
+sleep 20
 
-sleep 2
 # Get argocd password
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
-# Deploy
-sudo kubectl apply -f ../confs/argocd/deploy.yml
 
+# Deploy
+sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
+sudo kubectl apply -n dev -f ../confs/dev/app.yml
