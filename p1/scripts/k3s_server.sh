@@ -22,7 +22,9 @@ else
 fi
 
 # Installing k3s in server mode
-if k3s pas encore installe
+if k3s --version;then
+    echo "${B_ORANGE}k3s is already installed${RESET}"
+else
     if export INSTALL_K3S_EXEC="--node-ip=192.168.56.110"; then
         echo "${B_GREEN}INSTALL_K3S_EXEC set as expected${RESET}"
     else
@@ -36,18 +38,14 @@ if k3s pas encore installe
         echo "${B_RED}error installing K3s Server${RESET}"
         exit 1
     fi
-else
-    echo "${B_ORANGE}k3s already installed${RESET}"
 fi
-# export INSTALL_K3S_EXEC="--node-ip=192.168.56.110"
-# curl -sfL https://get.k3s.io | sh -
 
 # Writing the server's token in a file in the shared folder /vagrant
 # in order for the agent to be able to access it in the Worker VM
 if sudo cat /var/lib/rancher/k3s/server/token > /vagrant/server-token; then
-    echo ""
+    echo "${B_GREEN}server token successfully copied to /vagrant/server-token${RESET}"
 else
-    echo ""
+    echo "${B_RED}error: server token copy failed${RESET}"
     exit 1
 fi
 
