@@ -7,9 +7,8 @@ echo "${B_GREEN}. . . CLEANUP SCRIPT . . .${RESET}"
 
 # Clean up K3d
 if [ -x "$(command -v k3d)" ]; then
-	k3d cluster delete dev-app
-	kubectl delete namespace argocd
-	kubectl delete namespace dev
+	k3d cluster delete -a
+	kubectl delete namespace --all --cascade=true
 	rm -f /usr/local/bin/k3d
 	rm /usr/local/bin/kubectl
 	rm kubectl
