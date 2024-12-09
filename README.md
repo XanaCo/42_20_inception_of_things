@@ -1,6 +1,10 @@
 ## IoT
 
 ### Documentation
+#### GLOBAL : Kubectl commands cheat sheet
+- [Kubectl](https://spacelift.io/blog/kubernetes-cheat-sheet)
+- [Deployments vs Services](https://zeet.co/blog/kubernetes-service-vs-deployment)
+
 #### P1 : K3s and Vagrant
 - [K3s](https://docs.k3s.io/)
 - [Vagrant - Doc](https://developer.hashicorp.com/vagrant/tutorials/getting-started?product_intent=vagrant)
