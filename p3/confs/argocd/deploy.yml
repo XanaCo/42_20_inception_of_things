@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/XanaCo/ancolmen-IoT
     targetRevision: IoT_an
-    path: p3/dev/
+    path: p3/confs/dev/
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
