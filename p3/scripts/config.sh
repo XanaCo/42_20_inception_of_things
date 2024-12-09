@@ -48,24 +48,23 @@ sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
 sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-# Get argocd password
-sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
-
-sudo kubectl patch configmap argocd-cmd-params-cm -n argocd --type merge --patch '{"data": {"server.insecure": "true"}}'
+# sudo kubectl patch configmap argocd-cmd-params-cm -n argocd --type merge --patch '{"data": {"server.insecure": "true"}}'
 
 # Install ArgoCD CLI
-curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
-rm argocd-linux-amd64
+# curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+# sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+# rm argocd-linux-amd64
 
 # wait for pods
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sudo kubectl -n argocd get pods
-sleep 20
+# sleep 20
 
 # Deploy
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
 sudo kubectl apply -n dev -f ../confs/dev/app.yml
 
-sleep 20
+# Get argocd password
+sleep 30
+sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
 sudo kubectl port-forward svc/argocd-server -n argocd 8080:443
