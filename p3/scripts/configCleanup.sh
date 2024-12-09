@@ -3,6 +3,11 @@
 B_GREEN="\033[1;32m"
 RESET="\033[0m"
 
+if [ ! "$(id -u)" -eq 0 ]; then
+    echo "Run this script as ROOT or SUDO user"
+	exit 1
+fi
+
 echo "${B_GREEN}. . . CLEANUP SCRIPT . . .${RESET}"
 
 cd "$(dirname "$0")"

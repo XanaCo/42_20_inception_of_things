@@ -4,6 +4,11 @@ B_GREEN="\033[1;32m"
 B_RED="\033[1;31m"
 RESET="\033[0m"
 
+if [ ! "$(id -u)" -eq 0 ]; then
+    echo "Run this script as ROOT or SUDO user"
+	exit 1
+fi
+
 echo "${B_GREEN}. . . CONFIGURATION SCRIPT . . .${RESET}"
 
 # Cleanslate Preinstall Config
