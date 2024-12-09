@@ -4,6 +4,7 @@
 
 # Ignore kubectl deployment binaries and other common binary files
 kubectl
+get-docker.sh
 *.bin
 *.exe
 *.dmg
@@ -15,6 +16,7 @@ kubectl
 
 # Ignore any binaries in subdirectories (recursive)
 **/kubectl
+**/get-docker.sh
 **/*.bin
 **/*.exe
 **/*.dmg

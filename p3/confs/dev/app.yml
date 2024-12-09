@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wil
+  name: wil-deployment
   namespace: dev
   labels:
     app: wil
