@@ -37,12 +37,14 @@ else
 	echo "${B_GREEN}Docker is already installed!${RESET}"
 fi
 
+echo "${B_GREEN}. . . WE INSTALL K3d${RESET}"
 # 01.Install K3d
 sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 sudo k3d --version
 # Create a cluster
 sudo k3d cluster create dev-app --wait
 
+echo "${B_GREEN}. . . WE INSTALL ARGOCD${RESET}"
 # 02.Install ArgoCD
 sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
@@ -56,15 +58,18 @@ sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-
 # rm argocd-linux-amd64
 
 # wait for pods
+sleep 20
+echo "${B_GREEN}. . . WE WAIT FOR PODS${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sudo kubectl -n argocd get pods
-# sleep 20
 
 # Deploy
+echo "${B_GREEN}. . . WE DEPLOY YML${RESET}"
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
 sudo kubectl apply -n dev -f ../confs/dev/app.yml
 
-# Get argocd password
+# Get argocd password + Portforward to gain browser access
 sleep 30
-sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
+echo "${B_GREEN}. . . WE GET SECRET AND PORTFORWD${RESET}"
+sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > .argocd_pass
 sudo kubectl port-forward svc/argocd-server -n argocd 8080:443

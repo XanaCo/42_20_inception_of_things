@@ -33,6 +33,11 @@ else
 	echo "${B_GREEN}Docker is not installed${RESET}"
 fi
 
+# Remove argocd pass
+if [ -f .argocd_pass ]; then
+	sudo rm .argocd_pass
+fi
+
 # Finish cleaning up
 sudo apt-get clean 
 sudo apt-get autoremove -y
