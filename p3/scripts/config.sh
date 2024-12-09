@@ -66,3 +66,6 @@ sleep 20
 # Deploy
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
 sudo kubectl apply -n dev -f ../confs/dev/app.yml
+
+sleep 20
+sudo kubectl port-forward svc/argocd-server -n argocd 8080:443
