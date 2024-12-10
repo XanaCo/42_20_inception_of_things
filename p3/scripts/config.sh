@@ -48,24 +48,30 @@ echo "${B_GREEN}. . . ARGOCD INSTALL${RESET}"
 sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
 sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-# Install ArgoCD CLI
-# curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-# sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
-# rm argocd-linux-amd64
+
+# Install Ingress controller:
+sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
 sleep 10
-echo "${B_GREEN}. . . WAIT FOR PODS TO BE READY${RESET}"
+echo "${B_GREEN}. . . WAIT FOR PODS ARGOCD TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sudo kubectl -n argocd get pods
 
 echo "${B_GREEN}. . . DEPLOY APP${RESET}"
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
-# sudo kubectl apply -n dev -f ../confs/dev/app.yml
+
 
 # Get argocd password + Portforward to gain browser access
 sleep 10
 echo "${B_GREEN}. . . GET SECRET AND PORT-FORWARD${RESET}"
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > .argocd_pass
 
-sudo kubectl port-forward svc/wil-service dev 8888:8888
-sudo kubectl port-forward svc/argocd-server -n argocd 8080:443
+sudo kubectl port-forward svc/argocd-server -n argocd 8080:443 > /dev/null 2>&1 &
+
+echo "${B_GREEN}. . . WAIT FOR PODS DEV TO BE READY${RESET}"
+sudo kubectl wait --for=condition=Ready pods --all -n dev
+sudo kubectl -n dev get pods
+
+sudo kubectl apply -n dev -f ../confs/dev/ingress.yml
+# sudo kubectl port-forward svc/wil-service -n dev 8888:8888
+# echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
