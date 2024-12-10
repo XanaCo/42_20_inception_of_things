@@ -71,5 +71,5 @@ echo "${B_GREEN}. . . WAIT FOR PODS DEV TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n dev
 sudo kubectl -n dev get pods
 
-sudo kubectl port-forward svc/wil-service -n dev 8888:8888
-echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
+# sudo kubectl port-forward svc/wil-service -n dev 8888:8888
+# echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
