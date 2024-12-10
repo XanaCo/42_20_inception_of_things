@@ -48,9 +48,8 @@ echo "${B_GREEN}. . . ARGOCD INSTALL${RESET}"
 sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
 sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-# Install Ingress controller:
-sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+# # Install Ingress controller:
+# sudo kubectl apply -n ingress-nginx -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
 sleep 10
 echo "${B_GREEN}. . . WAIT FOR PODS ARGOCD TO BE READY${RESET}"
@@ -59,7 +58,7 @@ sudo kubectl -n argocd get pods
 
 echo "${B_GREEN}. . . DEPLOY APP${RESET}"
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
-
+# sudo kubectl apply -n dev -f ../confs/dev/ingress.yml
 
 # Get argocd password + Portforward to gain browser access
 sleep 10
@@ -72,6 +71,5 @@ echo "${B_GREEN}. . . WAIT FOR PODS DEV TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n dev
 sudo kubectl -n dev get pods
 
-sudo kubectl apply -n dev -f ../confs/dev/ingress.yml
-# sudo kubectl port-forward svc/wil-service -n dev 8888:8888
-# echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
+sudo kubectl port-forward svc/wil-service -n dev 8888:8888
+echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
