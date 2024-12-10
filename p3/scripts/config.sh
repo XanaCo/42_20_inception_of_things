@@ -4,12 +4,13 @@ B_GREEN="\033[1;32m"
 B_RED="\033[1;31m"
 RESET="\033[0m"
 
+# Run as sudo or nothing happens
 if [ ! "$(id -u)" -eq 0 ]; then
     echo "Run this script as ROOT or SUDO user"
 	exit 1
 fi
 
-# Cleanslate Preinstall Config
+# Preinstall Config
 cd "$(dirname "$0")"
 sudo sh ./configCleanup.sh
 
@@ -27,7 +28,6 @@ if ! [ -x "$(command -v kubectl)" ]; then
 else
     echo "${B_GREEN}Kubectl is already installed${RESET}"
 fi
-
 # B. Docker : https://get.docker.com/
 if ! [ -x "$(command -v docker)" ]; then
     echo "${B_GREEN}. . . DOCKER INSTALL${RESET}"
@@ -48,19 +48,17 @@ echo "${B_GREEN}. . . ARGOCD INSTALL${RESET}"
 sudo kubectl create namespace argocd
 sudo kubectl create namespace dev
 sudo kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-# # Install Ingress controller:
-# sudo kubectl apply -n ingress-nginx -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
 sleep 10
 echo "${B_GREEN}. . . WAIT FOR PODS ARGOCD TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sudo kubectl -n argocd get pods
 
+# 03.Deploy ArgoCD + app
 echo "${B_GREEN}. . . DEPLOY APP${RESET}"
 sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
-# sudo kubectl apply -n dev -f ../confs/dev/ingress.yml
 
-# Get argocd password + Portforward to gain browser access
+# 04.Redirections and port access
 sleep 10
 echo "${B_GREEN}. . . GET SECRET AND PORT-FORWARD ARGOCD${RESET}"
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > .argocd_pass
@@ -70,6 +68,9 @@ echo "${B_GREEN}. . . WAIT FOR PODS DEV TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n dev
 sudo kubectl -n dev get pods
 
-# Portforward wil-service to gain browser access
-sudo kubectl port-forward svc/wil-service -n dev 8888:8888
-echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
+while true
+do
+  sudo kubectl port-forward svc/wil-service -n dev 8888:8888
+  echo "Port forwarding stopped or failed. Retrying in 5 seconds..."
+  sleep 5
+done
