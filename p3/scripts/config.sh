@@ -62,14 +62,14 @@ sudo kubectl apply -n argocd -f ../confs/argocd/deploy.yml
 
 # Get argocd password + Portforward to gain browser access
 sleep 10
-echo "${B_GREEN}. . . GET SECRET AND PORT-FORWARD${RESET}"
+echo "${B_GREEN}. . . GET SECRET AND PORT-FORWARD ARGOCD${RESET}"
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > .argocd_pass
-
 sudo kubectl port-forward svc/argocd-server -n argocd 8080:443 > /dev/null 2>&1 &
 
 echo "${B_GREEN}. . . WAIT FOR PODS DEV TO BE READY${RESET}"
 sudo kubectl wait --for=condition=Ready pods --all -n dev
 sudo kubectl -n dev get pods
 
-# sudo kubectl port-forward svc/wil-service -n dev 8888:8888
-# echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
+# Portforward wil-service to gain browser access
+sudo kubectl port-forward svc/wil-service -n dev 8888:8888
+echo "${B_GREEN}RUN AGAIN: sudo kubectl port-forward svc/wil-service -n dev 8888:8888${RESET}"
