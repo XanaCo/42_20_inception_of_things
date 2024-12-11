@@ -40,4 +40,7 @@ else
     fi
 fi
 
+sudo kubectl create configmap app-one-html --from-file=/vagrant/config/app1/app1.html
+sudo kubectl apply -f /vagrant/config/app1/app1.yml
+
 echo "${B_YELLOW}Finished executing k3s_server.sh on $(hostname)${RESET}"
