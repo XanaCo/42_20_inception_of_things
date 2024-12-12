@@ -40,3 +40,6 @@ if [ "$yesno" = "y" ] || [ "$yesno" = "Y" ]; then
     vagrant ssh $SERVER -c 'ip a show eth1  | grep "inet 192.168.56.110"'
     result_message "correct ip address for the server" "server: incorrect ip address: ip expected: 192.168.56.110"
 fi
+sudo kubectl get all -o wide
+POD=sudo kubectl get pod | grep "app-one" | grep ?
+sudo kubectl exec $POD -- [command to execute inside the pod]

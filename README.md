@@ -27,3 +27,5 @@ sudo cat /var/lib/rancher/k3s/server/token
 sudo journalctl -u k3s
 sudo journalctl -u k3s-agent
 ip a show eth1
+
+sudo kubectl delete deployments --all && sudo kubectl delete services --all && sudo kubectl delete configmaps --all && sudo kubectl delete pods --all && sudo kubectl delete ingress --all && sudo kubectl delete ingressclass --all

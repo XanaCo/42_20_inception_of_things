@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-SERVER = "testS"
+SERVER = "cbernazeS"
 IP_SERVER = "192.168.56.110"
 VM_RAM_MB = "1024"
 

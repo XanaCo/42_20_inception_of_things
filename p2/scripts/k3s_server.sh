@@ -8,10 +8,10 @@ RESET="\033[0m"
 
 echo "${B_YELLOW}Executing k3s_server.sh on $(hostname)${RESET}"
 
-result=$(command -v curl)
+RESULT=$(command -v curl)
 
 # Checking if curl is already on the vm, then installing it if it is not
-if [ -n "$result" ]; then
+if [ -n "$RESULT" ]; then
     echo "${B_ORANGE}curl is already installed${RESET}"
 else
     echo "${B_ORANGE}curl isn't installed yet${RESET}"
@@ -40,7 +40,64 @@ else
     fi
 fi
 
-sudo kubectl create configmap app-one-html --from-file=/vagrant/config/app1/app1.html
-sudo kubectl apply -f /vagrant/config/app1/app1.yml
+CONFIG_DIR="/vagrant/config"
+
+apps=(
+    "app-one:app1"
+    "app-two:app2"
+    "app-three:app3"
+)
+
+# Creating all the configmaps needed for our pods
+create_configmaps() {
+    for app in "${apps[@]}"; do
+        app_name="${app%%:*}"
+        app_short="${app##*:}"
+
+        html_file="$CONFIG_DIR/$app_short/index.html"
+        if [ -f "$html_file" ]; then
+            echo "${B_YELLOW}ConfigMap creation for $app_short${RESET}"
+            sudo kubectl create configmap "$app_name-html" --from-file="$html_file" || {
+                echo "${B_RED}ConfigMap creation failed for $app_short${RESET}"
+                exit 1
+            }
+        else
+            echo "${B_RED}$app_short : $html_file not found${RESET}"
+            exit 1
+        fi
+        echo "${B_GREEN}ConfigMap successfully created for $app_short${RESET}"
+    done
+}
+
+# Creation of all our deployments
+apply_yaml_files() {
+    for app in "${apps[@]}"; do
+        app_name="${app%%:*}"
+        app_short="${app##*:}"
+        yml_file="$CONFIG_DIR/$app_short/$app_short.yml"
+        if [ -f "$yml_file" ]; then
+            echo "${B_YELLOW}Creation of $app_short${RESET}"
+            sudo kubectl apply -f "$yml_file" || {
+                echo "${B_RED}error during the creation of $app_short${RESET}"
+                exit 1
+            }
+            echo 
+        else
+            echo "${B_RED}$app_short : $yml_file not found${RESET}"
+            exit 1
+        fi
+        echo "${B_GREEN}$app_short successfully created${RESET}"
+    done
+}
+
+create_configmaps
+apply_yaml_files
+
+# sudo kubectl create configmap app-one-html --from-file=/vagrant/config/app1/index.html
+# sudo kubectl create configmap app-two-html --from-file=/vagrant/config/app2/index.html
+# sudo kubectl create configmap app-three-html --from-file=/vagrant/config/app3/index.html
+# sudo kubectl apply -f /vagrant/config/app1/app1.yml
+# sudo kubectl apply -f /vagrant/config/app2/app2.yml
+# sudo kubectl apply -f /vagrant/config/app3/app3.yml
 
 echo "${B_YELLOW}Finished executing k3s_server.sh on $(hostname)${RESET}"

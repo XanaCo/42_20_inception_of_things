@@ -1,18 +1,14 @@
 # App 2
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app2-html
-data:
-  index.html: app2.html
 
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app-two
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: app-two
   template:
     metadata:
       labels:
@@ -25,41 +21,40 @@ spec:
           - containerPort: 80
         volumeMounts:
         - mountPath: /usr/share/nginx/html
-          name: app2-volume
+          name: app-two-volume
       volumes:
-      - name: app2-volume
+      - name: app-two-volume
         configMap:
-          name: app2-hmtl
+          name: app-two-html
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-	name: app-two
+  name: app-two-service
 spec:
-	# type: ClusterIP
-	selector:
-		app: app-two
-	ports:
-		-	protocol: TCP
-			port: 80
-			# targetPort: 8080 No need to add the targetPort as kubernetes assumes it is the same as the exposed port above
-	# clusterIP: 10.43.171.213
+  selector:
+    app: app-two
+  ports:
+    - protocol: TCP
+      port: 80
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app-one-ingress
+  name: app-two-ingress
+  annotations:
+    spec.ingressClassName: "traefik"
 spec:
   rules:
-  - host: app1.com
+  - host: app2.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: app-one-service
+            name: app-two-service
             port:
               number: 80
