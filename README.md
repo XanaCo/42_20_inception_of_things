@@ -2,7 +2,7 @@
 
 ### Documentation
 #### GLOBAL : Kubectl commands cheat sheet
-- [Kubectl](https://spacelift.io/blog/kubernetes-cheat-sheet) & (https://spacelift.io/blog/kubectl-apply-vs-create)
+- [Kubectl](https://spacelift.io/blog/kubernetes-cheat-sheet) & (https://spacelift.io/blog/kubectl-apply-vs-create) & (https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-strong-getting-started-strong-)
 - [Deployments vs Services](https://zeet.co/blog/kubernetes-service-vs-deployment)
 
 #### P1 : K3s and Vagrant

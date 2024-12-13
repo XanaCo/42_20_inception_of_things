@@ -42,11 +42,7 @@ fi
 
 CONFIG_DIR="/vagrant/config"
 
-apps=(
-    "app-one:app1"
-    "app-two:app2"
-    "app-three:app3"
-)
+apps=("app-one:app1" "app-two:app2" "app-three:app3")
 
 # Creating all the configmaps needed for our pods
 create_configmaps() {
