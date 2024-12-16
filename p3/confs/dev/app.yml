@@ -32,14 +32,14 @@ spec:
     - protocol: TCP
       port: 8888
       targetPort: 8888
-      
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: dev-ingress
+  name: wil-ingress
   labels:
-    app: dev
+    app: wil
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
@@ -50,6 +50,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: dev-service
+            name: wil-service
             port:
               number: 8888
