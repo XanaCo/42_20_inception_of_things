@@ -62,11 +62,11 @@ sudo helm upgrade --install gitlab gitlab/gitlab \
   --set global.hosts.domain=gitlab.example.com \
   --set global.hosts.externalIP= \
   --set global.hosts.https=false \
-  --timeout 1000s
+  --timeout 100s
 
 # Get gitlab pods
 echo "${B_GREEN}. . . WAIT FOR PODS GITLAB TO BE READY${RESET}"
-sudo kubectl wait --for=condition=Ready pods --all -n gitlab
+sudo kubectl wait --for=condition=Ready pods --all --timeout=180s -n gitlab
 sudo kubectl -n gitlab get pods
 
 # Get gitlab password
