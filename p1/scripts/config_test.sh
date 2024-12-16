@@ -11,9 +11,9 @@ WORKER_NODE="ancolmensw"
 # Function to check the result of the last command
 check_result() {
   if [ $? -eq 0 ]; then
-    echo -e "${GREEN}✔ $1 correct${RESET}"
+    echo "${GREEN}✔ $1 correct${RESET}"
   else
-    echo -e "${RED}✘ $1 wrong${RESET}"
+    echo "${RED}✘ $1 wrong${RESET}"
     exit 1
   fi
 }
