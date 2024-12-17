@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wil-playground
+  namespace: dev
+  labels:
+    app: wil
+spec:
+  selector:
+    matchLabels:
+      app: wil
+  template:
+    metadata:
+      labels:
+        app: wil
+    spec:
+      containers:
+      - name: wil
+        image: wil42/playground:v2
+        ports:
+        - containerPort: 8888
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wil-service
+spec:
+  selector:
+    app: wil
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wil-ingress
+  labels:
+    app: wil
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wil-service
+            port:
+              number: 8888

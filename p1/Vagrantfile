@@ -1,0 +1,28 @@
+
+Vagrant.configure("2") do |config|
+	config.vm.box = "debian/bookworm64"
+
+	# Define 1st VM
+	config.vm.define "ancolmenS" do |server|
+		server.vm.hostname = "ancolmenS"
+		server.vm.network "private_network", ip: "192.168.56.110"
+		server.vm.provider "virtualbox" do |vb|
+			vb.customize ["modifyvm", :id, "--name", "ancolmenS"]
+			vb.memory = "1024"
+			vb.cpus = 1
+		end
+		server.vm.provision "shell", privileged: true, inline: "sh /vagrant/scripts/server.sh"
+	end
+
+	# Define 2nd VM
+	config.vm.define "ancolmenSW" do |worker|
+		worker.vm.hostname = "ancolmenSW"
+		worker.vm.network "private_network", ip: "192.168.56.111"
+		worker.vm.provider "virtualbox" do |vb|
+			vb.customize ["modifyvm", :id, "--name", "ancolmenSW"]
+			vb.memory = "1024"
+			vb.cpus = 1
+		end
+		worker.vm.provision "shell", privileged: true, inline: "sh /vagrant/scripts/worker.sh"
+	end
+end
