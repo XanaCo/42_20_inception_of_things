@@ -89,3 +89,15 @@ echo "${B_GREEN}. . . GET SECRET AND PORT-FORWARD ARGOCD${RESET}"
 sudo kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d > .argocd_pass
 sudo kubectl port-forward svc/argocd-server -n argocd 8080:443 > /dev/null 2>&1 &
 
+# Now, you have to create your repo and add your application in ArgoCD.
+# Go to Gitlab at http://localhost and login with user 'root' and the gitlab secret saved in the .gitlab_pass file
+# Create a New Blank Project
+# Name it as you wish, make it public, note its path (http://localhost/root/<name-of-the-project>)
+# Add the .yml file to it
+# To get the IP, we execute 'sudo kubectl get service -n gitlab' and we look for web-service-default of gitlab
+# Our app URL is http://<IP-of-our-gitlab-web-service>:8181/root/<name-of-the-project>.git
+# Go to ArgoCD at http://localhost:8080 and login with user 'admin' and the argocd secret stored in .argocd_pass file
+# Create a new app, name it as you wish, in the project name default. 
+# In SOURCE, We add our URL, with path .
+# In DESTINATION we choose the default and our dev namespace
+# And that's all
