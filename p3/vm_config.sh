@@ -56,4 +56,38 @@ else
     exit 1
 fi
 
+# Creating argocd & dev namespaces
+kubectl create -f ./k3d_config.yml || {
+    echo "error: failure during the creation of dev & argocd namespaces"
+    exit 1
+}
+
+# Installing ArgoCD in the argocd namespace
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml || {
+    echo "error: failed installation of ArgoCD"
+    exit 1
+}
+
+# Installing ArgoCD CLI
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 || {
+    echo "error: failed download of ArgoCD CLI"
+    exit 1
+}
+
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd || {
+    echo "error: failed installation of ArgoCD CLI"
+    exit 1
+}
+
+rm argocd-linux-amd64 || {
+    echo "error: failure removing file: /usr/local/bin/argocd/argocd-linux-amd64 "
+    exit 1
+}
+
+# Get the initial password to login argocd
+argocd admin initial-password -n argocd | head -n 1 > password.txt
+
+# Expose the ArgoCD server on port 8080
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
 echo "Execution of config_vm.sh finished"
